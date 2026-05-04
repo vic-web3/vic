@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-deep-sea: #000000;
+  --color-surface: #0a0a0a;
+  --color-surface-hover: #111111;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-tech-blue: #0070F3;
+  --color-tech-blue-glow: #00D1FF;
+  --color-dark-blue: #020C1B;
+  --color-cool-white: #EDEDED;
+  --color-grey-blue: #888888;
+  --color-accent-orange: #F5A623;
+
+  --font-sans: "Inter", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+}
+
+body {
+  background-color: var(--color-deep-sea);
+  color: var(--color-cool-white);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Utilities */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--color-border);
+  transition: all 0.3s ease;
+}
+
+.glass-panel:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.text-gradient {
+  background: linear-gradient(180deg, #FFFFFF 0%, #888888 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-blue {
+  background: linear-gradient(90deg, #00D1FF 0%, #0070F3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.glow-img {
+  filter: drop-shadow(0 0 40px rgba(0, 112, 243, 0.4));
+}
+
+.bg-cyber-grid {
+  background-image: linear-gradient(rgba(0, 209, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 209, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.bg-web3-nodes {
+  background-image: radial-gradient(rgba(0, 209, 255, 0.15) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.cyber-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+}
+
+.crt-scanlines {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.25) 50%,
+    rgba(0, 0, 0, 0.25)
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+}
+
+@keyframes glitch-anim-1 {
+  0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
+  20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
+  40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
+  60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
+  80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); }
+  100% { clip-path: inset(30% 0 50% 0); transform: translate(1px, -1px); }
+}
+
+@keyframes glitch-anim-2 {
+  0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, 1px); }
+  20% { clip-path: inset(30% 0 20% 0); transform: translate(-2px, -1px); }
+  40% { clip-path: inset(70% 0 10% 0); transform: translate(2px, 2px); }
+  60% { clip-path: inset(20% 0 50% 0); transform: translate(-2px, -2px); }
+  80% { clip-path: inset(50% 0 30% 0); transform: translate(1px, 1px); }
+  100% { clip-path: inset(5% 0 80% 0); transform: translate(-1px, -1px); }
+}
+
+.glitch-text {
+  position: relative;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+}
+
+.glitch-text::before {
+  left: 2px;
+  text-shadow: -1px 0 rgba(0, 209, 255, 0.7);
+  animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+  left: -2px;
+  text-shadow: -1px 0 rgba(245, 166, 35, 0.7);
+  animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}

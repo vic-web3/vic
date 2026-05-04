@@ -108,6 +108,104 @@ export function WhaleImage() {
         </svg>
       </div>
 
+      {/* AI Network Data Flow Connections */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none z-10" style={{ overflow: 'visible' }}>
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="rgba(0, 209, 255, 0.1)" />
+            <stop offset="50%" stopColor="rgba(0, 209, 255, 0.8)" />
+            <stop offset="100%" stopColor="rgba(0, 209, 255, 0.1)" />
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+
+        {/* Global Network Lines */}
+        <motion.path
+          d="M -5% 15% Q 40% 5% 85% 20%"
+          fill="none"
+          stroke="url(#grad1)"
+          strokeWidth="1.5"
+          strokeDasharray="4 6"
+          filter="url(#glow)"
+          animate={{ strokeDashoffset: [0, -40] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        />
+        
+        <motion.path
+          d="M 5% 85% Q 45% 95% 95% 70%"
+          fill="none"
+          stroke="rgba(168, 85, 247, 0.4)"
+          strokeWidth="1.5"
+          strokeDasharray="4 6"
+          animate={{ strokeDashoffset: [0, 40] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+        />
+
+        <motion.path
+          d="M -5% 15% Q -10% 50% 5% 85%"
+          fill="none"
+          stroke="rgba(74, 222, 128, 0.4)"
+          strokeWidth="1"
+          strokeDasharray="3 5"
+          animate={{ strokeDashoffset: [0, -30] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+        />
+
+        <motion.path
+          d="M 85% 20% Q 110% 45% 95% 70%"
+          fill="none"
+          stroke="rgba(250, 204, 21, 0.4)"
+          strokeWidth="1"
+          strokeDasharray="3 5"
+          animate={{ strokeDashoffset: [0, 30] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+        />
+
+        {/* Sync lines to center IP */}
+        <motion.path
+          d="M 50% 50% L 85% 20%"
+          fill="none"
+          stroke="rgba(0, 209, 255, 0.3)"
+          strokeWidth="1"
+          strokeDasharray="2 4"
+          animate={{ strokeDashoffset: [0, 20] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.path
+          d="M 50% 50% L -5% 15%"
+          fill="none"
+          stroke="rgba(0, 209, 255, 0.3)"
+          strokeWidth="1"
+          strokeDasharray="2 4"
+          animate={{ strokeDashoffset: [0, -20] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.path
+          d="M 50% 50% L 5% 85%"
+          fill="none"
+          stroke="rgba(0, 209, 255, 0.3)"
+          strokeWidth="1"
+          strokeDasharray="2 4"
+          animate={{ strokeDashoffset: [0, 20] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.path
+          d="M 50% 50% L 95% 70%"
+          fill="none"
+          stroke="rgba(0, 209, 255, 0.3)"
+          strokeWidth="1"
+          strokeDasharray="2 4"
+          animate={{ strokeDashoffset: [0, -20] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+        />
+      </svg>
+
       {/* Floating Arbitrage Agents */}
       {aiAgents.map((agent, index) => {
         const colors = getStateColors(agent.state);

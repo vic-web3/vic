@@ -1,21 +1,24 @@
 import { motion } from "motion/react";
+import { useLanguage } from "../contexts/LanguageContext";
 
 export function CommunitySystem() {
+  const { t } = useLanguage();
+
   const layers = [
     {
       name: "Whale Research",
-      cnName: "免费层",
-      features: ["项目分析", "市场判断", "机会筛选"]
+      cnName: t("免费层", "Free Tier"),
+      features: [t("项目分析", "Project Analysis"), t("市场判断", "Market Judgement"), t("机会筛选", "Opportunity Filtering")]
     },
     {
       name: "Whale System",
-      cnName: "核心层",
-      features: ["用户成长路径", "策略参与入口", "项目跟踪体系"]
+      cnName: t("核心层", "Core Tier"),
+      features: [t("用户成长路径", "Growth Path"), t("策略参与入口", "Strategy Access"), t("项目跟踪体系", "Tracking System")]
     },
     {
       name: "Whale Pro",
-      cnName: "进阶层",
-      features: ["深度策略", "核心社群", "高级机会优先权"]
+      cnName: t("进阶层", "Pro Tier"),
+      features: [t("深度策略", "Deep Strategy"), t("核心社群", "Core Community"), t("高级机会优先权", "Priority Access")]
     }
   ];
 
@@ -31,7 +34,7 @@ export function CommunitySystem() {
             Product System
           </div>
           <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
-            我们的产品体系
+            {t("我们的产品体系", "Our Product System")}
           </h2>
         </div>
 
@@ -70,7 +73,7 @@ export function CommunitySystem() {
 
         <div className="mt-20 text-center">
           <p className="inline-block px-8 py-3 glass-panel rounded-full text-lg md:text-xl font-bold text-white tracking-widest">
-            从认知到参与， <span className="text-tech-blue">建立完整的用户路径</span>。
+            {t("从认知到参与，", "From cognition to participation, ")} <span className="text-tech-blue">{t("建立完整的用户路径", "building a complete user path")}</span>。
           </p>
         </div>
 

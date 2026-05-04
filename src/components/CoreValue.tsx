@@ -1,22 +1,25 @@
 import { motion } from "motion/react";
 import { Combine, Clock, ShieldAlert } from "lucide-react";
+import { useLanguage } from "../contexts/LanguageContext";
 
 export function CoreValue() {
+  const { t } = useLanguage();
+
   const values = [
     {
       icon: <Combine className="w-6 h-6 text-tech-blue" />,
-      title: "结构模型 (Structure)",
-      desc: "分析项目的资金结构、收益逻辑与可持续性，判断是否具备长期运行基础。"
+      title: t("结构模型 (Structure)", "Structure Model"),
+      desc: t("分析项目的资金结构、收益逻辑与可持续性，判断是否具备长期运行基础。", "Analyze fund structure, yield logic, and sustainability to judge long-term viability.")
     },
     {
       icon: <Clock className="w-6 h-6 text-tech-blue" />,
-      title: "阶段模型 (Timing)",
-      desc: "不是所有项目都能参与，关键在于进入与退出的时机。"
+      title: t("阶段模型 (Timing)", "Timing Model"),
+      desc: t("不是所有项目都能参与，关键在于进入与退出的时机。", "Not all projects are actionable; the key lies in entry and exit timing.")
     },
     {
       icon: <ShieldAlert className="w-6 h-6 text-accent-orange" />,
-      title: "风险模型 (Risk)",
-      desc: "识别波动来源、系统性风险与流动性风险。"
+      title: t("风险模型 (Risk)", "Risk Model"),
+      desc: t("识别波动来源、系统性风险与流动性风险。", "Identify sources of volatility, systemic risk, and liquidity risk.")
     }
   ];
 
@@ -26,10 +29,10 @@ export function CoreValue() {
         
         <div className="mb-16 text-center">
           <div className="font-display text-sm tracking-[0.2em] text-tech-blue mb-4 uppercase">
-            Methodology
+            {t("Methodology", "Methodology")}
           </div>
           <h2 className="text-3xl md:text-5xl font-black text-white">
-            我们如何判断机会？
+            {t("我们如何判断机会？", "How We Identify Opportunities?")}
           </h2>
         </div>
 
@@ -60,8 +63,8 @@ export function CoreValue() {
         <div className="mt-16 text-center">
           <blockquote className="inline-block border-l-4 border-tech-blue pl-6 py-2 text-left">
             <p className="text-2xl font-medium text-white/90 italic tracking-wide">
-              "我们不是预测市场，<br />
-              <span className="text-tech-blue font-bold not-italic">我们理解结构。</span>"
+              "{t("我们不是预测市场，", "We don't predict the market,")}<br />
+              <span className="text-tech-blue font-bold not-italic">{t("我们理解结构。", "we understand structure.")}</span>"
             </p>
           </blockquote>
         </div>

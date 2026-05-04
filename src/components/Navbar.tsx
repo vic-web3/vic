@@ -1,12 +1,14 @@
 import { motion } from "motion/react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Globe } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { cn } from "../lib/utils";
 import { Logo } from "./Logo";
+import { useLanguage } from "../contexts/LanguageContext";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,10 +19,10 @@ export function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: "方法论", href: "#methodology" },
-    { name: "产品体系", href: "#system" },
-    { name: "关注机会", href: "#opportunities" },
-    { name: "了解我们", href: "#about" },
+    { name: t("方法论", "Methodology"), href: "#methodology" },
+    { name: t("产品体系", "System"), href: "#system" },
+    { name: t("关注机会", "Opportunities"), href: "#opportunities" },
+    { name: t("了解我们", "About"), href: "#about" },
   ];
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -51,7 +53,7 @@ export function Navbar() {
             <Logo small />
           </div>
 
-          {/* Desktop Nav */}
+            {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <a
@@ -63,6 +65,16 @@ export function Navbar() {
                 {link.name}
               </a>
             ))}
+            
+            <button
+              onClick={() => setLanguage(language === "ZH" ? "EN" : "ZH")}
+              className="flex items-center gap-2 text-sm font-medium text-grey-blue hover:text-tech-blue transition-colors tracking-wide ml-2"
+              title="Switch Language"
+            >
+              <Globe size={16} />
+              <span>{language === "ZH" ? "EN" : "中文"}</span>
+            </button>
+
             <a
               href="#join"
               onClick={(e) => handleSmoothScroll(e, "#join")}
@@ -100,6 +112,15 @@ export function Navbar() {
                 {link.name}
               </a>
             ))}
+            
+            <button
+              onClick={() => setLanguage(language === "ZH" ? "EN" : "ZH")}
+              className="flex items-center gap-2 text-sm font-medium text-grey-blue hover:text-tech-blue py-2"
+            >
+              <Globe size={16} />
+              <span>{language === "ZH" ? "English" : "中文"}</span>
+            </button>
+
             <a
               href="#join"
               className="px-6 py-3 rounded-full bg-tech-blue/10 border border-tech-blue/30 text-tech-blue text-center text-sm font-medium mt-2"

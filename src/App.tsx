@@ -14,8 +14,11 @@ import { Partners } from "./components/Partners";
 import { MediaPartners } from "./components/MediaPartners";
 import { Roadmap } from "./components/Roadmap";
 import { CTA } from "./components/CTA";
+import { LanguageProvider, useLanguage } from "./contexts/LanguageContext";
 
-export default function App() {
+function MainContent() {
+  const { t } = useLanguage();
+  
   return (
     <div className="min-h-screen bg-[#030712] text-white relative">
       {/* Global Subtle Backgrounds */}
@@ -43,13 +46,13 @@ export default function App() {
       <footer className="py-12 border-t border-white/5 text-center relative z-10 bg-[#050505]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
-            <h3 className="text-xl font-bold text-white tracking-widest mb-2">鲸鱼社区</h3>
+            <h3 className="text-xl font-bold text-white tracking-widest mb-2">{t("鲸鱼社区", "Whale Community")}</h3>
             <p className="text-tech-blue font-medium tracking-widest uppercase text-sm">Whale Community</p>
           </div>
           
           <div className="flex justify-center gap-6 mb-8">
             <a href="https://t.me/+1HJZDZWbk7hkNDE1" target="_blank" rel="noopener noreferrer" className="text-grey-blue hover:text-tech-blue transition-colors font-medium tracking-wider">
-              Telegram 社区
+              {t("Telegram 社区", "Telegram Community")}
             </a>
             <a href="https://x.com/SwapX_DEX" target="_blank" rel="noopener noreferrer" className="text-grey-blue hover:text-tech-blue transition-colors font-medium tracking-wider">
               Twitter (X)
@@ -58,7 +61,7 @@ export default function App() {
 
           <div className="mb-8">
             <p className="text-lg text-white/80 font-medium italic tracking-widest">
-              "鲸鱼社区 不是信息源 而是<span className="text-tech-blue">认知过滤器</span>"
+              "{t("鲸鱼社区 不是信息源 而是", "Whale Community is not an information source but a ")}<span className="text-tech-blue">{t("认知过滤器", "cognitive filter")}</span>"
             </p>
           </div>
 
@@ -69,5 +72,13 @@ export default function App() {
       </footer>
       </div>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <MainContent />
+    </LanguageProvider>
   );
 }

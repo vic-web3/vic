@@ -1,9 +1,133 @@
 import { motion } from "motion/react";
 import { ArrowRight, Hexagon, Link } from "lucide-react";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { WhaleImage } from "./WhaleImage";
 
+function AIParticles() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    const handleResize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    };
+    window.addEventListener('resize', handleResize);
+
+    let mouseX = width / 2;
+    let mouseY = height / 2;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+
+    const particles = Array.from({ length: 50 }).map(() => {
+      const startX = Math.random() * width;
+      const startY = Math.random() * height;
+      return {
+        x: startX,
+        y: startY,
+        baseX: startX,
+        baseY: startY,
+        vx: (Math.random() - 0.5) * 0.8,
+        vy: (Math.random() - 0.5) * 0.8,
+        size: Math.random() * 2 + 0.5,
+      };
+    });
+
+    let animationFrameId: number;
+
+    const render = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      particles.forEach(p => {
+        // Natural drift
+        p.baseX += p.vx;
+        p.baseY += p.vy;
+
+        if (p.baseX < 0 || p.baseX > width) p.vx *= -1;
+        if (p.baseY < 0 || p.baseY > height) p.vy *= -1;
+
+        // Interaction with mouse
+        const dx = mouseX - p.baseX;
+        const dy = mouseY - p.baseY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        let targetX = p.baseX;
+        let targetY = p.baseY;
+
+        const maxDist = 200;
+        if (dist < maxDist) {
+          const force = (maxDist - dist) / maxDist;
+          // Cluster gently towards mouse
+          targetX += (dx / dist) * force * 30;
+          targetY += (dy / dist) * force * 30;
+        }
+
+        p.x += (targetX - p.x) * 0.1;
+        p.y += (targetY - p.y) * 0.1;
+
+        // Draw particle
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        // Highlight particle if near mouse
+        const distanceToMouse = Math.sqrt((mouseX - p.x) ** 2 + (mouseY - p.y) ** 2);
+        const opacity = distanceToMouse < 200 ? 0.4 + 0.4 * (1 - distanceToMouse / 200) : 0.4;
+        ctx.fillStyle = `rgba(0, 209, 255, ${opacity})`;
+        ctx.fill();
+      });
+
+      // Draw networking lines
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(0, 209, 255, ${0.15 * (1 - dist / 120)})`;
+            ctx.stroke();
+          }
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", handleMouseMove);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-0 opacity-70" />;
+}
+
+import { useLanguage } from "../contexts/LanguageContext";
+
 export function Hero() {
+  const { t } = useLanguage();
+
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href.startsWith('#')) {
       e.preventDefault();
@@ -23,6 +147,8 @@ export function Hero() {
         <div className="absolute top-1/4 -left-64 w-96 h-96 bg-tech-blue/20 rounded-full blur-[120px] mix-blend-screen pointer-events-none"></div>
         <div className="absolute bottom-1/4 -right-64 w-[500px] h-[500px] bg-dark-blue/60 rounded-full blur-[150px] mix-blend-screen pointer-events-none"></div>
       </div>
+      
+      <AIParticles />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
@@ -40,29 +166,23 @@ export function Hero() {
             </div>
             
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight mb-8">
-              <span className="block mb-2">看懂趋势的人</span>
-              <span className="block text-gradient-blue text-4xl sm:text-5xl lg:text-5xl mt-4">才有资格参与市场</span>
+              <span className="block mb-2">{t("看懂趋势的人", "Those Who Understand Trends")}</span>
+              <span className="block text-gradient-blue text-4xl sm:text-5xl lg:text-5xl mt-4">{t("才有资格参与市场", "Are Qualified to Trade")}</span>
             </h1>
 
-            <div className="text-lg md:text-xl text-cool-white/80 max-w-xl leading-relaxed mb-6 font-medium space-y-2">
-              <p className="font-bold text-tech-blue">鲸鱼社区｜Web3结构性机会研究平台</p>
-              <p>用认知筛选项目，用系统参与市场</p>
+            <div className="text-lg md:text-xl text-cool-white/80 max-w-xl leading-relaxed mb-10 font-medium space-y-2">
+              <p className="font-bold text-tech-blue">{t("鲸鱼社区｜Web3结构性机会研究平台", "Whale Community | Web3 Structural Opportunities Platform")}</p>
+              <p>{t("用认知筛选项目，用系统参与市场", "Filter projects with cognition, participate systematically")}</p>
             </div>
-
-            <p className="text-sm md:text-base text-grey-blue max-w-xl leading-relaxed mb-10 font-bold tracking-wide">
-              不是谁喊得响谁赚钱
-              <br />
-              而是谁看得更深
-            </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="https://t.me/+1HJZDZWbk7hkNDE1" target="_blank" rel="noopener noreferrer" className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-tech-blue text-deep-sea rounded-full font-bold overflow-hidden transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(0,209,255,0.4)]">
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-                <span className="relative z-10 block tracking-wide">加入社区</span>
+                <span className="relative z-10 block tracking-wide">{t("加入社区", "Join Community")}</span>
                 <ArrowRight size={18} className="relative z-10 group-hover:translate-x-1 transition-transform" />
               </a>
               <a href="#about" onClick={(e) => handleSmoothScroll(e, '#about')} className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-surface border border-tech-blue/30 text-cool-white rounded-full font-medium hover:bg-surface-hover hover:border-tech-blue/60 transition-all shadow-[inset_0_0_15px_rgba(0,209,255,0.05)]">
-                <span className="tracking-wide text-sm font-bold">开始探索</span>
+                <span className="tracking-wide text-sm font-bold">{t("开始探索", "Explore Now")}</span>
               </a>
             </div>
 
